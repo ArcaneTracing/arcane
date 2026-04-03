@@ -1,0 +1,134 @@
+version: '1.0'
+entities: 
+  - name: Chat Model
+    type: gen_ai.request.model
+    externalId: opentelemetry.chat
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: chat
+    entityType: model
+    messageMatching:
+      type: canonical
+      canonicalMessageMatchingConfiguration:
+        inputAttributeKey: gen_ai.input_messages
+        outputAttributeKey: gen_ai.output_messages
+      flatMessageMatchingConfiguration: null
+    entityHighlights:
+      - key: gen_ai.request.model
+        title: Request Model
+        valueType: string
+      - key: gen_ai.response.model
+        title: Response Model
+        valueType: string
+      - key: gen_ai.usage.input_tokens
+        title: Input Tokens
+        valueType: number
+      - key: gen_ai.usage.output_tokens
+        title: Output Tokens
+        valueType: number
+  - name: Content Generation
+    type: gen_ai.request.model
+    externalId: opentelemetry.generate_content
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: generate_content
+    entityType: model
+    messageMatching:
+      type: canonical
+      canonicalMessageMatchingConfiguration:
+        inputAttributeKey: gen_ai.input_messages
+        outputAttributeKey: gen_ai.output_messages
+      flatMessageMatchingConfiguration: null
+    entityHighlights:
+      - key: gen_ai.request.model
+        title: Request Model
+        valueType: string
+      - key: gen_ai.response.model
+        title: Response Model
+        valueType: string
+      - key: gen_ai.usage.input_tokens
+        title: Input Tokens
+        valueType: number
+      - key: gen_ai.usage.output_tokens
+        title: Output Tokens
+        valueType: number
+  - name: Text Completion
+    type: gen_ai.request.model
+    externalId: opentelemetry.text_completion
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: text_completion
+    entityType: model
+    messageMatching:
+      type: canonical
+      canonicalMessageMatchingConfiguration:
+        inputAttributeKey: gen_ai.input_messages
+        outputAttributeKey: gen_ai.output_messages
+      flatMessageMatchingConfiguration: null
+    entityHighlights:
+      - key: gen_ai.request.model
+        title: Request Model
+        valueType: string
+      - key: gen_ai.response.model
+        title: Response Model
+        valueType: string
+      - key: gen_ai.usage.input_tokens
+        title: Input Tokens
+        valueType: number
+      - key: gen_ai.usage.output_tokens
+        title: Output Tokens
+        valueType: number
+  - name: Embedding
+    type: embedding.model_name
+    externalId: opentelemetry.embeddings
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: embeddings
+    entityType: embedding
+    entityHighlights:
+      - key: embedding.model_name
+        title: Model Name
+        valueType: string
+      - key: gen_ai.usage.input_tokens
+        title: Input Tokens
+        valueType: number
+      - key: gen_ai.usage.output_tokens
+        title: Output Tokens
+        valueType: string
+  - name: Create Agent
+    type: create_agent
+    externalId: opentelemetry.create_agent
+    iconId: package
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: create_agent
+    entityType: custom
+    entityHighlights:
+      - key: gen_ai.agent.name
+        title: Agent Name
+        valueType: string
+  - name: Agent
+    type: gen_ai.agent.name
+    externalId: opentelemetry.invoke_agent
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: invoke_agent
+    entityType: agent
+    entityHighlights:
+      - key: gen_ai.agent.name
+        title: Agent Name
+        valueType: string
+  - name: Tool
+    type: gen_ai.tool.name
+    externalId: opentelemetry.execute_tool
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: execute_tool
+    entityType: tool
+    entityHighlights:
+      - key: gen_ai.provider.name
+        title: Provider Name
+        valueType: string
+      - key: gen_ai.tool.name
+        title: Tool Name
+        valueType: string

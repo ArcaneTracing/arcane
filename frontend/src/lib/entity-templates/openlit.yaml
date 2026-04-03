@@ -1,0 +1,490 @@
+version: '1.0'
+entities:
+  - name: Model
+    type: gen_ai.request.model
+    externalId: openlit.chat
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: chat
+    entityType: model
+    messageMatching:
+      type: canonical
+      canonicalMessageMatchingConfiguration:
+        inputAttributeKey: gen_ai.input_messages
+        outputAttributeKey: gen_ai.output_messages
+      flatMessageMatchingConfiguration: null
+    entityHighlights:
+      - key: gen_ai.request.model
+        title: Request Model
+        valueType: string
+      - key: gen_ai.response.model
+        title: Response Model
+        valueType: string
+      - key: gen_ai.usage.input_tokens
+        title: Input Tokens
+        valueType: number
+      - key: gen_ai.usage.output_tokens
+        title: Output Tokens
+        valueType: number
+  - name: Text Completion
+    type: gen_ai.request.model
+    externalId: openlit.text_completion
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: text_completion
+    entityType: model
+    messageMatching:
+      type: canonical
+      canonicalMessageMatchingConfiguration:
+        inputAttributeKey: gen_ai.input_messages
+        outputAttributeKey: gen_ai.output_messages
+      flatMessageMatchingConfiguration: null
+    entityHighlights:
+      - key: gen_ai.request.model
+        title: Request Model
+        valueType: string
+      - key: gen_ai.response.model
+        title: Response Model
+        valueType: string
+      - key: gen_ai.usage.input_tokens
+        title: Input Tokens
+        valueType: number
+      - key: gen_ai.usage.output_tokens
+        title: Output Tokens
+        valueType: number
+  - name: Workflow
+    type: workflow
+    externalId: openlit.workflow
+    iconId: git-branch
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: workflow
+    entityType: custom
+    entityHighlights: []
+  - name: Graph Execution
+    type: graph_execution
+    externalId: openlit.graph_execution
+    iconId: route
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: graph_execution
+    entityType: custom
+    entityHighlights: []
+  - name: User Prompt Processing
+    type: user_prompt_processing
+    externalId: openlit.user_prompt_processing
+    iconId: file-code
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: user_prompt_processing
+    entityType: custom
+    entityHighlights: []
+  - name: Model Request
+    type: model_request
+    externalId: openlit.model_request
+    iconId: brain
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: model_request
+    entityType: custom
+    entityHighlights: []
+  - name: Tool Coordination
+    type: tool_coordination
+    externalId: openlit.tool_coordination
+    iconId: wrench
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: tool_coordination
+    entityType: custom
+    entityHighlights: []
+  - name: Agent
+    type: gen_ai.agent.name
+    externalId: openlit.invoke_agent
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: invoke_agent
+    entityType: agent
+    entityHighlights:
+      - key: gen_ai.agent.name
+        title: Agent Name
+        valueType: string
+  - name: Create Agent
+    type: create_agent
+    externalId: openlit.create_agent
+    iconId: package
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: create_agent
+    entityType: custom
+    entityHighlights:
+      - key: gen_ai.agent.name
+        title: Agent Name
+        valueType: string
+  - name: Execute Task
+    type: gen_ai.agent.name
+    externalId: openlit.execute_task
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: execute_task
+    entityType: agent
+    entityHighlights:
+      - key: gen_ai.agent.name
+        title: Agent Name
+        valueType: string
+  - name: Tool
+    type: gen_ai.tool.name
+    externalId: openlit.execute_tool
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: execute_tool
+    entityType: tool
+    entityHighlights:
+      - key: gen_ai.provider.name
+        title: Provider Name
+        valueType: string
+      - key: gen_ai.tool.name
+        title: Tool Name
+        valueType: string
+  - name: Retriever
+    type: gen_ai.retrieval.query
+    externalId: openlit.retrieve
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: retrieve
+    entityType: retriever
+    entityHighlights:
+      - key: gen_ai.retrieval.query
+        title: Retrieval Query
+        valueType: string
+  - name: Memory
+    type: memory
+    externalId: openlit.memory
+    iconId: archive
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: memory
+    entityType: custom
+    entityHighlights: []
+  - name: Memory Add
+    type: memory_add
+    externalId: openlit.memory_add
+    iconId: archive
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: memory_add
+    entityType: custom
+    entityHighlights: []
+  - name: Memory Search
+    type: memory_search
+    externalId: openlit.memory_search
+    iconId: archive
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: memory_search
+    entityType: custom
+    entityHighlights: []
+  - name: Memory Get
+    type: memory_get
+    externalId: openlit.memory_get
+    iconId: archive
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: memory_get
+    entityType: custom
+    entityHighlights: []
+  - name: Memory Update
+    type: memory_update
+    externalId: openlit.memory_update
+    iconId: archive
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: memory_update
+    entityType: custom
+    entityHighlights: []
+  - name: Memory Delete
+    type: memory_delete
+    externalId: openlit.memory_delete
+    iconId: archive
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: memory_delete
+    entityType: custom
+    entityHighlights: []
+  - name: Vector DB
+    type: vector_db
+    externalId: openlit.vector_db
+    iconId: database
+    matchingAttributeName: db.system
+    matchingPatternType: regex
+    matchingPattern: ^(chroma|Pinecone|Qdrant|milvus|weaviate|marqo|lancedb)$
+    entityType: custom
+    entityHighlights:
+      - key: db.system.name
+        title: DB System
+        valueType: string
+      - key: db.operation.name
+        title: DB Operation
+        valueType: string
+  - name: Embedding
+    type: embedding.model_name
+    externalId: openlit.embeddings
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: embeddings
+    entityType: embedding
+    entityHighlights:
+      - key: embedding.model_name
+        title: Model Name
+        valueType: string
+      - key: gen_ai.usage.input_tokens
+        title: Input Tokens
+        valueType: number
+      - key: gen_ai.usage.output_tokens
+        title: Output Tokens
+        valueType: string
+  - name: Image
+    type: image
+    externalId: openlit.image
+    iconId: image
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: image
+    entityType: custom
+    entityHighlights:
+      - key: gen_ai.request.image_size
+        title: Image Size
+        valueType: string
+      - key: gen_ai.request.image_quality
+        title: Image Quality
+        valueType: string
+      - key: gen_ai.request.image_style
+        title: Image Style
+        valueType: string
+  - name: Audio
+    type: audio
+    externalId: openlit.audio
+    iconId: mic
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: audio
+    entityType: custom
+    entityHighlights: []
+  - name: Fine Tuning
+    type: fine_tuning
+    externalId: openlit.fine_tuning
+    iconId: settings
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: fine_tuning
+    entityType: custom
+    entityHighlights:
+      - key: gen_ai.response.id
+        title: Job ID
+        valueType: string
+  - name: Translate
+    type: translate
+    externalId: openlit.translate
+    iconId: globe
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: translate
+    entityType: custom
+    entityHighlights: []
+  - name: Speech to Text
+    type: speech_to_text
+    externalId: openlit.speech_to_text
+    iconId: mic
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: speech_to_text
+    entityType: custom
+    entityHighlights: []
+  - name: Text to Speech
+    type: text_to_speech
+    externalId: openlit.text_to_speech
+    iconId: megaphone
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: text_to_speech
+    entityType: custom
+    entityHighlights: []
+  - name: Transliterate
+    type: transliterate
+    externalId: openlit.transliterate
+    iconId: globe
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: transliterate
+    entityType: custom
+    entityHighlights: []
+  - name: Language Identification
+    type: language_identification
+    externalId: openlit.language_identification
+    iconId: globe
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: language_identification
+    entityType: custom
+    entityHighlights: []
+  - name: Speech to Text Translate
+    type: speech_to_text_translate
+    externalId: openlit.speech_to_text_translate
+    iconId: globe
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: speech_to_text_translate
+    entityType: custom
+    entityHighlights: []
+  - name: MCP Tool Call
+    type: mcp_tool_call
+    externalId: openlit.mcp_tool_call
+    iconId: wrench
+    matchingAttributeName: mcp.operation.name
+    matchingPatternType: value
+    matchingValue: mcp_tool_call
+    entityType: custom
+    entityHighlights:
+      - key: mcp.method
+        title: MCP Method
+        valueType: string
+  - name: MCP Tool List
+    type: mcp_tool_list
+    externalId: openlit.mcp_tool_list
+    iconId: wrench
+    matchingAttributeName: mcp.operation.name
+    matchingPatternType: value
+    matchingValue: mcp_tool_list
+    entityType: custom
+    entityHighlights:
+      - key: mcp.method
+        title: MCP Method
+        valueType: string
+  - name: MCP Resource Read
+    type: mcp_resource_read
+    externalId: openlit.mcp_resource_read
+    iconId: file-code
+    matchingAttributeName: mcp.operation.name
+    matchingPatternType: value
+    matchingValue: mcp_resource_read
+    entityType: custom
+    entityHighlights:
+      - key: mcp.method
+        title: MCP Method
+        valueType: string
+  - name: MCP Resource List
+    type: mcp_resource_list
+    externalId: openlit.mcp_resource_list
+    iconId: file-code
+    matchingAttributeName: mcp.operation.name
+    matchingPatternType: value
+    matchingValue: mcp_resource_list
+    entityType: custom
+    entityHighlights:
+      - key: mcp.method
+        title: MCP Method
+        valueType: string
+  - name: MCP Request
+    type: mcp_request
+    externalId: openlit.mcp_request
+    iconId: arrow-right
+    matchingAttributeName: mcp.operation.name
+    matchingPatternType: value
+    matchingValue: mcp_request
+    entityType: custom
+    entityHighlights:
+      - key: mcp.method
+        title: MCP Method
+        valueType: string
+  - name: Crawl
+    type: crawl
+    externalId: openlit.crawl
+    iconId: globe
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: crawl
+    entityType: custom
+    entityHighlights: []
+  - name: Crawl Deep
+    type: crawl_deep
+    externalId: openlit.crawl_deep
+    iconId: globe
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: crawl_deep
+    entityType: custom
+    entityHighlights: []
+  - name: Extract
+    type: extract
+    externalId: openlit.extract
+    iconId: file-code
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: extract
+    entityType: custom
+    entityHighlights: []
+  - name: Scrape
+    type: scrape
+    externalId: openlit.scrape
+    iconId: scan
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: scrape
+    entityType: custom
+    entityHighlights: []
+  - name: Map
+    type: map
+    externalId: openlit.map
+    iconId: map
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: map
+    entityType: custom
+    entityHighlights: []
+  - name: Search
+    type: search
+    externalId: openlit.search
+    iconId: search
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: search
+    entityType: custom
+    entityHighlights: []
+  - name: Browser Run
+    type: browser_run
+    externalId: openlit.browser_run
+    iconId: monitor
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: browser_run
+    entityType: custom
+    entityHighlights: []
+  - name: Browser Step
+    type: browser_step
+    externalId: openlit.browser_step
+    iconId: monitor
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: browser_step
+    entityType: custom
+    entityHighlights: []
+  - name: Browser Action
+    type: browser_action
+    externalId: openlit.browser_action
+    iconId: monitor
+    matchingAttributeName: gen_ai.operation.name
+    matchingPatternType: value
+    matchingValue: browser_action
+    entityType: custom
+    entityHighlights: []
+  - name: MCP Response
+    type: mcp_response
+    externalId: openlit.mcp_response
+    iconId: arrow-left
+    matchingAttributeName: mcp.operation.name
+    matchingPatternType: value
+    matchingValue: mcp_response
+    entityType: custom
+    entityHighlights:
+      - key: mcp.method
+        title: MCP Method
+        valueType: string

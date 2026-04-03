@@ -1,0 +1,6 @@
+projectKey=frontend
+serverUrl=http://192.168.1.104:9001
+serverVersion=26.1.0.118079
+dashboardUrl=http://192.168.1.104:9001/dashboard?id=frontend
+ceTaskId=979cb0aa-8cf6-47d9-a7a0-2b167359258c
+ceTaskUrl=http://192.168.1.104:9001/api/ce/task?id=979cb0aa-8cf6-47d9-a7a0-2b167359258c

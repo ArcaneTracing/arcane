@@ -1,0 +1,144 @@
+version: '1.0'
+entities:
+  - name: Chain
+    type: chain
+    externalId: openinference.chain
+    matchingAttributeName: openinference.span.kind
+    matchingPatternType: value
+    matchingValue: CHAIN
+    entityType: custom
+    entityHighlights:
+      - key: gen_ai.request.model
+        title: Request Model
+        valueType: string
+      - key: gen_ai.response.model
+        title: Response Model
+        valueType: string
+      - key: gen_ai.usage.input_tokens
+        title: Input Tokens
+        valueType: number
+      - key: gen_ai.usage.output_tokens
+        title: Output Tokens
+        valueType: number
+    iconId: link
+  - name: Tool
+    type: tool.name
+    externalId: openinference.tool
+    matchingAttributeName: openinference.span.kind
+    matchingPatternType: value
+    matchingValue: TOOL
+    entityType: tool
+    entityHighlights:
+      - key: tool.name
+        title: Tool name
+        valueType: string
+      - key: input.value
+        title: Tool Input
+        valueType: string
+  - name: Model
+    type: gen_ai.request.model
+    externalId: openinference.llm
+    matchingAttributeName: openinference.span.kind
+    matchingPatternType: value
+    matchingValue: LLM
+    entityType: model
+    entityHighlights:
+      - key: gen_ai.request.model
+        title: Request Model
+        valueType: string
+      - key: gen_ai.response.model
+        title: Response Model
+        valueType: string
+      - key: gen_ai.usage.input_tokens
+        title: Input Tokens
+        valueType: number
+      - key: gen_ai.usage.output_tokens
+        title: Output Tokens
+        valueType: number
+    messageMatching:
+      type: flat
+      flatMessageMatchingConfiguration:
+        flatInputMessageMatchingKeys:
+          namePattern: ^llm\.input_messages\.\d+\.message\.name$
+          rolePattern: ^llm\.input_messages\.\d+\.message\.role$
+          contentPattern: ^llm\.input_messages\.\d+\.message\.content$
+          toolCallIdPattern: ^llm\.input_messages\.\d+\.message\.tool_calls\.\d+\.tool_call\.id$
+          toolMessageCallIdPattern: ^llm\.input_messages\.\d+\.message\.tool_call_id$
+          toolCallFunctionNamePattern: ^llm\.input_messages\.\d+\.message\.tool_calls\.\d+\.tool_call\.function\.name$
+          toolCallFunctionArgumentPattern: ^llm\.input_messages\.\d+\.message\.tool_calls\.\d+\.tool_call\.function\.arguments$
+        flatOutputMessageMatchingKeys:
+          namePattern: ^llm\.output_messages\.\d+\.message\.name$
+          rolePattern: ^llm\.output_messages\.\d+\.message\.role$
+          contentPattern: ^llm\.output_messages\.\d+\.message\.content$
+          toolCallIdPattern: ^llm\.output_messages\.\d+\.message\.tool_calls\.\d+\.tool_call\.id$
+          toolMessageCallIdPattern: ^llm\.output_messages\.\d+\.message\.tool_call_id$
+          toolCallFunctionNamePattern: ^llm\.output_messages\.\d+\.message\.tool_calls\.\d+\.tool_call\.function\.name$
+          toolCallFunctionArgumentPattern: ^llm\.output_messages\.\d+\.message\.tool_calls\.\d+\.tool_call\.function\.arguments$
+      canonicalMessageMatchingConfiguration: null
+  - name: Embedding
+    type: embedding.model_name
+    externalId: openinference.embedding
+    matchingAttributeName: openinference.span.kind
+    matchingPatternType: value
+    matchingValue: EMBEDDING
+    entityType: embedding
+    entityHighlights:
+      - key: embedding.model_name
+        title: Model Name
+        valueType: string
+  - name: Reranker
+    type: reranker
+    externalId: openinference.reranker
+    iconId: shuffle
+    matchingAttributeName: openinference.span.kind
+    matchingPatternType: value
+    matchingValue: RERANKER
+    entityType: custom
+    entityHighlights:
+      - key: reranker.model_name
+        title: Model Name
+        valueType: string
+  - name: Retriever
+    type: openinference.span.kind
+    externalId: openinference.retriever
+    matchingAttributeName: openinference.span.kind
+    matchingPatternType: value
+    matchingValue: RETRIEVER
+    entityType: retriever
+    entityHighlights: []
+  - name: Agent
+    type: agent.name
+    externalId: openinference.agent
+    matchingAttributeName: openinference.span.kind
+    matchingPatternType: value
+    matchingValue: AGENT
+    entityType: agent
+    entityHighlights:
+      - key: agent.name
+        title: Agent Name
+        valueType: string
+  - name: Guardrail
+    type: openinference.span.kind
+    externalId: openinference.guardrail
+    matchingAttributeName: openinference.span.kind
+    matchingPatternType: value
+    matchingValue: GUARDRAIL
+    entityType: guardrail
+    entityHighlights: []
+  - name: Evaluator
+    type: openinference.span.kind
+    externalId: openinference.evaluator
+    matchingAttributeName: openinference.span.kind
+    matchingPatternType: value
+    matchingValue: EVALUATOR
+    entityType: evaluator
+    entityHighlights: []
+  - name: Prompt
+    type: prompt
+    externalId: openinference.prompt
+    iconId: file-code
+    matchingAttributeName: openinference.span.kind
+    matchingPatternType: value
+    matchingValue: PROMPT
+    entityType: custom
+    entityHighlights: []

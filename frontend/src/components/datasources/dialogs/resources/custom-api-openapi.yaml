@@ -1,0 +1,506 @@
+openapi: 3.0.3
+info:
+  title: Custom Trace API
+  description: |
+    OpenAPI specification for a Custom API service that integrates with Arcane.
+    
+    This API provides endpoints for searching traces, retrieving trace details, and querying trace attributes.
+    The API must return responses in raw OTLP/Tempo-compatible format.
+    
+    ## Capabilities
+    
+    The API can support different capabilities that are configured when creating a datasource:
+    - `searchByQuery`: Supports query string (`q` parameter)
+    - `searchByAttributes`: Supports attribute-based search (`attributes` parameter in logfmt format)
+    - `filterByAttributeExists`: Supports filtering by attribute existence (`filterByAttributeExists` parameter)
+    - `getAttributeNames`: Provides endpoint to list all available attribute names
+    - `getAttributeValues`: Provides endpoint to get values for a specific attribute
+    
+    ## Authentication
+    
+    The API supports multiple authentication methods:
+    - Bearer token authentication
+    - Custom header authentication
+    - Basic authentication
+    
+    ## Response Format
+    
+    All responses must be in raw OTLP/Tempo-compatible format. No format conversion is performed.
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@example.com
+
+servers:
+  - url: https://api.example.com
+    description: Production server
+  - url: http://localhost:8080
+    description: Development server
+
+tags:
+  - name: traces
+    description: Trace search and retrieval operations
+  - name: attributes
+    description: Attribute querying operations
+
+paths:
+  /api/traces/search:
+    get:
+      tags:
+        - traces
+      summary: Search traces
+      description: |
+        Search for traces based on various filters including time range, query string, attributes, duration, service name, and operation name.
+        
+        The endpoint supports different query parameters based on enabled capabilities:
+        - `q`: Query string (if `searchByQuery` capability is enabled)
+        - `attributes`: Logfmt-formatted attributes (if `searchByAttributes` capability is enabled)
+        - `filterByAttributeExists`: Comma-separated attribute names (if `filterByAttributeExists` capability is enabled)
+      operationId: searchTraces
+      parameters:
+        - name: start
+          in: query
+          required: true
+          description: Start time as Unix timestamp in seconds
+          schema:
+            type: integer
+            format: int64
+            example: 1706457600
+        - name: end
+          in: query
+          required: true
+          description: End time as Unix timestamp in seconds
+          schema:
+            type: integer
+            format: int64
+            example: 1706461200
+        - name: limit
+          in: query
+          required: false
+          description: Maximum number of traces to return
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10000
+            default: 20
+            example: 20
+        - name: q
+          in: query
+          required: false
+          description: Query string for searching traces (requires `searchByQuery` capability)
+          schema:
+            type: string
+            example: 'service.name="my-service"'
+        - name: attributes
+          in: query
+          required: false
+          description: |
+            Logfmt-formatted attributes for filtering (requires `searchByAttributes` capability).
+            Format: `key1=value1 key2=value2`
+          schema:
+            type: string
+            example: 'session.id="123" user.id="456"'
+        - name: filterByAttributeExists
+          in: query
+          required: false
+          description: |
+            Comma-separated list of attribute names to filter by existence (requires `filterByAttributeExists` capability).
+            Only traces with non-empty values for these attributes will be returned.
+          schema:
+            type: string
+            example: 'session.id,user.id'
+        - name: minDuration
+          in: query
+          required: false
+          description: Minimum trace duration in milliseconds
+          schema:
+            type: integer
+            minimum: 0
+            example: 100
+        - name: maxDuration
+          in: query
+          required: false
+          description: Maximum trace duration in milliseconds
+          schema:
+            type: integer
+            minimum: 0
+            example: 5000
+        - name: serviceName
+          in: query
+          required: false
+          description: Filter traces by service name
+          schema:
+            type: string
+            example: 'my-service'
+        - name: operationName
+          in: query
+          required: false
+          description: Filter traces by operation name
+          schema:
+            type: string
+            example: 'handleRequest'
+      responses:
+        '200':
+          description: Successful response with trace search results
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/TraceSearchResponse'
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/TraceSummary'
+              examples:
+                object_response:
+                  summary: Response as object with traces array
+                  value:
+                    traces:
+                      - traceID: "abc123"
+                        rootServiceName: "my-service"
+                        rootTraceName: "handleRequest"
+                        startTimeUnixNano: "1706457600000000000"
+                        durationMs: 150
+                        spanSet:
+                          spans: []
+                array_response:
+                  summary: Response as array of traces
+                  value:
+                    - traceID: "abc123"
+                      rootServiceName: "my-service"
+                      rootTraceName: "handleRequest"
+                      startTimeUnixNano: "1706457600000000000"
+                      durationMs: 150
+                      spanSet:
+                        spans: []
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/traces/{traceId}:
+    get:
+      tags:
+        - traces
+      summary: Get trace by ID
+      description: |
+        Retrieve a specific trace by its ID.
+        
+        The path must support the `{traceId}` placeholder which will be replaced with the actual trace ID.
+      operationId: getTraceById
+      parameters:
+        - name: traceId
+          in: path
+          required: true
+          description: Trace ID (supports {traceId} placeholder)
+          schema:
+            type: string
+            example: "abc123def456"
+        - name: start
+          in: query
+          required: false
+          description: Start time as ISO 8601 timestamp
+          schema:
+            type: string
+            format: date-time
+            example: "2024-01-28T15:00:00Z"
+        - name: end
+          in: query
+          required: false
+          description: End time as ISO 8601 timestamp
+          schema:
+            type: string
+            format: date-time
+            example: "2024-01-28T16:00:00Z"
+      responses:
+        '200':
+          description: Successful response with trace details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraceResponse'
+              example:
+                traceID: "abc123def456"
+                batches:
+                  - resource:
+                      attributes: []
+                    scopeSpans:
+                      - spans:
+                          - traceId: "abc123def456"
+                            spanId: "span123"
+                            name: "handleRequest"
+                            startTimeUnixNano: "1706457600000000000"
+                            durationNanos: "150000000"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Trace not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                statusCode: 404
+                message: "Trace not found"
+                error: "Not Found"
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/attributes:
+    get:
+      tags:
+        - attributes
+      summary: Get all attribute names
+      description: |
+        Retrieve all available attribute names from traces.
+        
+        This endpoint is optional and only required if `getAttributeNames` capability is enabled.
+      operationId: getAttributeNames
+      responses:
+        '200':
+          description: Successful response with list of attribute names
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: array
+                    items:
+                      type: string
+                    example: ["service.name", "session.id", "user.id"]
+                  - type: object
+                    properties:
+                      attributeNames:
+                        type: array
+                        items:
+                          type: string
+                    example:
+                      attributeNames: ["service.name", "session.id", "user.id"]
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/attributes/{attributeName}/values:
+    get:
+      tags:
+        - attributes
+      summary: Get attribute values
+      description: |
+        Retrieve all distinct values for a specific attribute.
+        
+        The path must support the `{attributeName}` placeholder which will be replaced with the actual attribute name.
+        
+        This endpoint is optional and only required if `getAttributeValues` capability is enabled.
+      operationId: getAttributeValues
+      parameters:
+        - name: attributeName
+          in: path
+          required: true
+          description: Attribute name (supports {attributeName} placeholder)
+          schema:
+            type: string
+            example: "session.id"
+      responses:
+        '200':
+          description: Successful response with list of attribute values
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: array
+                    items:
+                      type: string
+                    example: ["value1", "value2", "value3"]
+                  - type: object
+                    properties:
+                      values:
+                        type: array
+                        items:
+                          type: string
+                    example:
+                      values: ["value1", "value2", "value3"]
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  schemas:
+    TraceSearchResponse:
+      type: object
+      required:
+        - traces
+      properties:
+        traces:
+          type: array
+          items:
+            $ref: '#/components/schemas/TraceSummary'
+
+    TraceSummary:
+      type: object
+      required:
+        - traceID
+      properties:
+        traceID:
+          type: string
+          description: Unique trace identifier
+          example: "abc123def456"
+        rootServiceName:
+          type: string
+          description: Name of the root service
+          example: "my-service"
+        rootTraceName:
+          type: string
+          description: Name of the root operation
+          example: "handleRequest"
+        startTimeUnixNano:
+          type: string
+          description: Start time in nanoseconds since Unix epoch
+          example: "1706457600000000000"
+        durationMs:
+          type: number
+          description: Trace duration in milliseconds
+          example: 150
+        spanSet:
+          type: object
+          description: Set of spans in the trace
+          properties:
+            spans:
+              type: array
+              items:
+                $ref: '#/components/schemas/Span'
+            matched:
+              type: integer
+              description: Number of matched spans
+
+    Span:
+      type: object
+      properties:
+        spanID:
+          type: string
+          description: Unique span identifier
+        startTimeUnixNano:
+          type: string
+          description: Start time in nanoseconds since Unix epoch
+        durationNanos:
+          type: string
+          description: Duration in nanoseconds
+        attributes:
+          type: array
+          description: Span attributes
+          items:
+            type: object
+        serviceName:
+          type: string
+          description: Service name
+        name:
+          type: string
+          description: Span name
+
+    TraceResponse:
+      type: object
+      required:
+        - batches
+      properties:
+        batches:
+          type: array
+          description: OTLP resource spans batches
+          items:
+            type: object
+            properties:
+              resource:
+                type: object
+                properties:
+                  attributes:
+                    type: array
+                    items:
+                      type: object
+              scopeSpans:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    spans:
+                      type: array
+                      items:
+                        type: object
+
+    ErrorResponse:
+      type: object
+      required:
+        - statusCode
+        - message
+        - error
+      properties:
+        statusCode:
+          type: integer
+          description: HTTP status code
+          example: 400
+        message:
+          type: string
+          description: Error message
+          example: "Invalid request parameters"
+        error:
+          type: string
+          description: Error type
+          example: "Bad Request"
+
+  responses:
+    BadRequest:
+      description: Bad request - validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            statusCode: 400
+            message: "Invalid request parameters"
+            error: "Bad Request"
+
+    Unauthorized:
+      description: Unauthorized - authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            statusCode: 401
+            message: "Unauthorized"
+            error: "Unauthorized"
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            statusCode: 500
+            message: "Internal server error"
+            error: "Internal Server Error"
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token authentication
+    HeaderAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: Custom header authentication (header name may vary)
+    BasicAuth:
+      type: http
+      scheme: basic
+      description: Basic authentication
+
+security:
+  - BearerAuth: []
+  - HeaderAuth: []
+  - BasicAuth: []
